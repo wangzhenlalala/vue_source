@@ -1,0 +1,6 @@
+1.vue.extend 具体做了什么 ???
+2.如果 Sub_1= Vue.extend(options); 那么我们如何 Sub_2 = inheritacne(Sub_1); ???
+
+
+
+在 Sub  = Vue.extend({})中，为Sub添加了extendOptions , options
