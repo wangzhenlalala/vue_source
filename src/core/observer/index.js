@@ -42,12 +42,14 @@ export class Observer {
     this.vmCount = 0
     def(value, '__ob__', this)
     if (Array.isArray(value)) {
+      // []
       const augment = hasProto
         ? protoAugment
         : copyAugment
       augment(value, arrayMethods, arrayKeys)
       this.observeArray(value)
     } else {
+      // {}
       this.walk(value)
     }
   }
@@ -104,6 +106,7 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
  * or the existing observer if the value already has one.
  */
 export function observe (value: any, asRootData: ?boolean): Observer | void {
+  //value必须是对象
   if (!isObject(value)) {
     return
   }
@@ -117,6 +120,13 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     Object.isExtensible(value) &&
     !value._isVue
   ) {
+    /**
+     * 1. 
+     * 2.不是在服务端渲染中
+     * 3.value是数组 或者 对象
+     * 4.value是可扩展的
+     * 5.value不是一个vue组件
+     */
     ob = new Observer(value)
   }
   if (asRootData && ob) {
@@ -145,11 +155,13 @@ export function defineReactive (
   const getter = property && property.get
   const setter = property && property.set
 
+  //如果val 不是object 或者 array 则observe返回 undefined
   let childOb = observe(val)
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
+      //对象中的属性key已经存在getter
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
         dep.depend()

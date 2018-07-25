@@ -24,6 +24,7 @@ export function def (obj: Object, key: string, val: any, enumerable?: boolean) {
 
 /**
  * Parse simple path.
+ * 路径中只能包含 0-9 a-z A-Z . $
  */
 const bailRE = /[^\w.$]/
 export function parsePath (path: string): any {

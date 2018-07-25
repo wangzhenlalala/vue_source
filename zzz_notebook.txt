@@ -4,3 +4,28 @@
 
 
 在 Sub  = Vue.extend({})中，为Sub添加了extendOptions , options
+
+// 三目运算符
+
+condition1
+?   condition2
+    ?   condition3
+        ?   true_3
+        :   falsy_3
+    :   falsy_2 
+:   falsy_1
+
+// 三目运算符
+
+initProxy 的目的，就是设置渲染函数的作用域代理，其目的是为我们提供更好的提示信息。
+
+/**
+ * A watcher parses an expression, collects dependencies,
+ * and fires callback when the expression value changes.
+ * This is used for both the $watch() api and directives.
+ */
+
+
+    // Deep watchers and watchers on Object/Arrays should fire even
+    // when the value is the same, because the value may
+    / have mutated.

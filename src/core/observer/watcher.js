@@ -71,6 +71,7 @@ export default class Watcher {
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
+      //返回值是一个函数，接受一个对象参数， 该函数在调用时 在参数对象上 对expORFn中指定的 层次属性名进行求值 （收集依赖）
       this.getter = parsePath(expOrFn)
       if (!this.getter) {
         this.getter = function () {}
