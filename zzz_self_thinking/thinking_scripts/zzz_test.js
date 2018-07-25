@@ -9,10 +9,12 @@
  *  objB = {name: 'objB'};
  *                  对于： object[key] = objA; 
  * 1. object[key] = ojbB; //触发key的依赖
- *      我们要在key的setter中触发，依赖于该属性的watcher，来监听该属性值的改变[如果改变就已经不是 该属性值本身了]
+ *      在key的setter中 触发依赖于该属性的watcher，来监听该属性值的改变[此时已经不是 该属性值本身了]
+ *      Vue可以监听到该变化
  *          
  * 2. delete object[key] //从对象中移除该属性 此时也应该触发 key 的依赖，因为object[key]已经不存在了
  *                       //但是 object key的setter ，getter 无法监测到这种形式的改变
+ * 
  * 3. object[key]['age'] = 25; //此时也应该触发key的依赖，因为object[key]已经和原来不一样了。
  *                             //但是，object key的setter， getter无法监测到这种形式改变
  *      

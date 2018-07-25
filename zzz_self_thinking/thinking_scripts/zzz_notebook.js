@@ -17,7 +17,7 @@ condition1
 
 // 三目运算符
 
-initProxy 的目的，就是设置渲染函数的作用域代理，其目的是为我们提供更好的提示信息。
+//initProxy 的目的，就是设置渲染函数的作用域代理，其目的是为我们提供更好的提示信息。
 
 /**
  * A watcher parses an expression, collects dependencies,
