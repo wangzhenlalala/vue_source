@@ -28,4 +28,4 @@ condition1
 
     // Deep watchers and watchers on Object/Arrays should fire even
     // when the value is the same, because the value may
-    / have mutated.
+    // have mutated.
