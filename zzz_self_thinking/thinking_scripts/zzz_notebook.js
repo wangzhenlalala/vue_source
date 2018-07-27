@@ -1,3 +1,13 @@
+
+
+/**
+ * Assets
+ *
+ * When a vm is present (instance creation), we need to do
+ * a three-way merge between constructor options, instance
+ * options and parent options.
+ */
+
 1.vue.extend 具体做了什么 ???
 2.如果 Sub_1= Vue.extend(options); 那么我们如何 Sub_2 = inheritacne(Sub_1); ???
 
@@ -29,3 +39,5 @@ condition1
     // Deep watchers and watchers on Object/Arrays should fire even
     // when the value is the same, because the value may
     // have mutated.
+
+

@@ -60,6 +60,9 @@ export const hasSymbol =
   typeof Symbol !== 'undefined' && isNative(Symbol) &&
   typeof Reflect !== 'undefined' && isNative(Reflect.ownKeys)
 
+
+
+
 /**
  * Defer a task to execute it asynchronously.
  */
@@ -146,7 +149,15 @@ export const nextTick = (function () {
   }
 })()
 
+
+
+
+
+
+
+
 let _Set
+
 /* istanbul ignore if */
 if (typeof Set !== 'undefined' && isNative(Set)) {
   // use native Set when available.

@@ -18,11 +18,13 @@ export default class Dep {
     this.id = uid++
     this.subs = []
   }
-
+  
+  //subscribe
   addSub (sub: Watcher) {
     this.subs.push(sub)
   }
 
+  //unsubscribe
   removeSub (sub: Watcher) {
     remove(this.subs, sub)
   }
@@ -33,6 +35,7 @@ export default class Dep {
     }
   }
 
+  //publish
   notify () {
     // stabilize the subscriber list first
     const subs = this.subs.slice()

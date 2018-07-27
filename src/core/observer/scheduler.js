@@ -142,7 +142,7 @@ export function queueWatcher (watcher: Watcher) {
     // queue the flush
     if (!waiting) {
       waiting = true
-      nextTick(flushSchedulerQueue)
+      nextTick(flushSchedulerQueue);
     }
   }
 }

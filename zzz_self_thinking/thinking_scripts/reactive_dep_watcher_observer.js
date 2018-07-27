@@ -216,7 +216,7 @@ function observe(value, asRootData){
         },
         set: function reactiveSetter (newVal){
             const value = getter ? getter.call(obj) : val;
-
+            //判断值时候改变了  ： NaN !== NaN
             if( newVal === value || ( newVal !== newVal && value !== value) ){
                 return ;
             }
@@ -228,11 +228,13 @@ function observe(value, asRootData){
             if(setter){
                 setter.call(obj, newVal);
             }else{
+                //更新缓存的值
                 val = newVal;
             };
             /**
-             * 每次值的改变都要重新 observe(newVal), 接着去触发属性的依赖
-             * 然后渲染函数执行，求值。然后属性的依赖被重新设置。
+             * 每次值的改变都要重新 observe(newVal), 把新的值转变成响应式的，如果新的值是一个对象or数组，
+             * observe也会递归的convert them to be reactive.
+             * 
              */
             childob = observe(newVal);
             dep.notify();
@@ -241,11 +243,15 @@ function observe(value, asRootData){
 
  };
 
+
+ 
 function remove(arr, item){
     //arr: Array<any>, item: any
     if(arr.length){
         const index = arr.indexOf(item);
-        return arr.splice(index,1);
+        if(index > -1){
+            return arr.splice(index,1);
+        }
     }
 }
  /**
@@ -265,12 +271,13 @@ let uid_Dep = 0;
         this.subs = [];
     };
 
-    
+    //subscribe 订阅该publisher || observer
     addSub (subscriber){
         //subscriber: Watcher
         this.subs.push(subscriber);
     };
-
+    
+    //unsubscribe 取消订阅该publisher || observer
     removeSub( subscriber){
         // subscriber: Watcher
         remove(this.subs, subscriber);
@@ -284,8 +291,10 @@ let uid_Dep = 0;
             Dep.target.addDep(this);
         };
     };
-
+    
+    //publish 发布消息
     notify(){
+        //保存当前watcher的快照。在watcher中触发的改变，不会再本次round中执行。
         const subs = this.subs.slice();
         for(let i = 0; i < subs.length; i++){
             subs[i].update();
@@ -354,6 +363,7 @@ function handleError(err, vm, info){
  * and fires callback when the expression value changes.
  * This is used for both the $watch() api and directives.
  */
+
 /**
  * Watcher 的原理是通过对“被观测目标”的求值，
  * 触发数据属性的 get 拦截器函数从而收集依赖，
@@ -375,14 +385,14 @@ class Watcher {
         // expOrFn: string | function,
         // cb: Function,
         // options?: Object
-        this.vm = vm;
-        vm._watchers.push(this); //什么时候加入的? => initLifecycle
+        this.vm = vm; //这里的vm，等待着watcher被执行后 在vm上触发updated钩子事件
+        vm._watchers.push(this); //什么时候加入的? => initState
         //options
 
         if(options){
             this.deep = !!options.deep;
             this.user = !!options.user;
-            this.lazy = !!options.lazy;
+            this.lazy = !!options.lazy; //对于计算属性 给出的是true  state.js#148行
             this.sync = !!options.sync;
         }else{
             this.user = this.deep = this.lazy = this.sync = false;
@@ -434,10 +444,13 @@ class Watcher {
         //dependencies for deep watching
 
         if(this.deep){
+            //该节点的子孙节点，也都要依赖于该节点的watcher
             traverse(value);
         };
 
         popTarget();
+        //now ,新一轮的依赖收集完毕了，
+        //清理上一次留下的依赖-去除不再需要观察的 观察者
         this.cleanupDeps();
         return value;
     }
@@ -449,7 +462,31 @@ class Watcher {
     addDep(dep){
         //dep: Dep
         const id = dep.id;
+        //对于在本次求值中，同一个值被多次求值的话，过滤到重复的。
         if(!this.newDepIds.has(id)){
+            /*为什么要加这个判断，才加入 ？？？？
+                因为每次收集完依赖后，都会执行cleanupDeps来去除 已经失效的 dep(本次求值没有触及，但是上次求值有触及，存在于depIds,但是不存在于newDepIds)
+                对于已经失效的dep，并不是把他们直接删除就完了，
+                因为失效的dep,（definedReactive闭包dep)当中，依然存在这该watcher的索引。
+                等到下次该dep在别的地方被触发了，他依然会通知该watcher，但是该dep对应属性的变化，已经跟该watcher无关了。
+                要把他们从该dep中去除才可以；
+                [
+                    同一个数据，可能会在
+                    1.不同的vm中被使用、  
+                    2.被不同的watch监听
+                ]；
+                每一个属性key都是一个 publisher(发布者),
+                每一个watcher都是一个 subscriber(订阅者);
+                a. 每一个publisher 可以 有很多的subscriber, publisher用dep来保存自己的 subscriber
+                b. 每一个subscriber 可以subscribe 很多的 publisher, 也可以在某些时候，取消订阅（unsubscribe)
+                    自己的一些publisher，因此subscriber，需要保存其 subscribe 的 publishers， 才能告知publisher
+                    自己不再订阅的事件。
+                对两个集合 newDepIds and depIds 的并集
+                可以分为三部分： 
+                    1.上次没有, 这次 有 的
+                    2.上次有，  这次 还 有的
+                    3.上次有，  这次 没 有的
+            */
             this.newDepIds.add(id);
             this.newDeps.push(dep);
             if( !this.depIds.has(id)){
@@ -489,10 +526,12 @@ class Watcher {
 
      update(){
          if(this.lazy){
+             //对于计算属性的lazy evaluate
              this.dirty = true;
          }else if( this.sync ){
              this.run();
          }else{
+             //batch change's callbacks
              queueWatcher(this);
          }
      }
