@@ -27,6 +27,7 @@ export function initMixin (Vue: Class<Component>) {
     }
 
     // a flag to avoid this being observed
+    //调用了_init方法的都是组件的实例
     vm._isVue = true
     // merge options
     if (options && options._isComponent) {
@@ -95,6 +96,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
    */
   let options = Ctor.options
   if (Ctor.super) {
+    //当Ctor == Vue的时候，是不会走到这里的
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
     if (superOptions !== cachedSuperOptions) {

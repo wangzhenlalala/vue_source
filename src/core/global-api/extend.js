@@ -40,6 +40,7 @@ export function initExtend (Vue: GlobalAPI) {
     
     const Super = this
     const SuperId = Super.cid
+    //当同一个extendOptins对象，用来从同一个（相同superid) 再一次 继承生成子类，那么就直接返回已经缓存生成的子类
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if (cachedCtors[SuperId]) {
       return cachedCtors[SuperId] 

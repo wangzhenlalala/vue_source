@@ -596,7 +596,6 @@ var hasSymbol =
  * Defer a task to execute it asynchronously.
  */
 var nextTick = (function () {
-  debugger;
   var callbacks = [];
   var pending = false;
   var timerFunc;
@@ -723,7 +722,6 @@ var Dep = function Dep () {
 
 Dep.prototype.addSub = function addSub (sub) {
 
-  debugger;
 
   this.subs.push(sub);
 };
@@ -734,7 +732,6 @@ Dep.prototype.removeSub = function removeSub (sub) {
 
 Dep.prototype.depend = function depend () {
 
-  debugger;
 
   if (Dep.target) {
     Dep.target.addDep(this);
@@ -945,14 +942,13 @@ function defineReactive$$1 (
 
   var childOb = observe(val)
   
-  debugger;
 
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
     get: function reactiveGetter () {
       var value = getter ? getter.call(obj) : val;
-      debugger;
+      
       if (Dep.target) {
         dep.depend();
         if (childOb) {
@@ -966,7 +962,7 @@ function defineReactive$$1 (
     },
     set: function reactiveSetter (newVal) {
       var value = getter ? getter.call(obj) : val
-      debugger;
+    
       /* eslint-disable no-self-compare */
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return
@@ -1316,7 +1312,7 @@ function mergeOptions (
   {
     checkComponents(child);
   }
-
+ 
   if (typeof child === 'function') {
     child = child.options;
   }
@@ -1343,6 +1339,7 @@ function mergeOptions (
     }
   }
   function mergeField (key) {
+    
     var strat = strats[key] || defaultStrat;
     options[key] = strat(parent[key], child[key], vm, key);
   }
@@ -2741,7 +2738,7 @@ var Watcher = function Watcher (
   cb,
   options
 ) {
-  debugger
+  
   this.vm = vm;
   vm._watchers.push(this);
   // options
@@ -2787,7 +2784,7 @@ var Watcher = function Watcher (
  */
 Watcher.prototype.get = function get () {
   
-  debugger;
+
 
   pushTarget(this);
   var value;
@@ -2808,7 +2805,7 @@ Watcher.prototype.get = function get () {
   }
   popTarget();
   
-  debugger;
+ 
 
   this.cleanupDeps();
   return value
@@ -2818,7 +2815,7 @@ Watcher.prototype.get = function get () {
  * Add a dependency to this directive.
  */
 Watcher.prototype.addDep = function addDep (dep) {
-  debugger;
+
   var id = dep.id;
   if (!this.newDepIds.has(id)) {
     this.newDepIds.add(id);
@@ -2857,7 +2854,7 @@ Watcher.prototype.cleanupDeps = function cleanupDeps () {
  * Will be called when a dependency changes.
  */
 Watcher.prototype.update = function update () {
-  debugger;
+
   /* istanbul ignore else */
   if (this.lazy) {
     this.dirty = true;
@@ -2873,7 +2870,7 @@ Watcher.prototype.update = function update () {
  * Will be called by the scheduler.
  */
 Watcher.prototype.run = function run () {
-  debugger;
+
   if (this.active) {
     var value = this.get();
     if (
@@ -2913,7 +2910,7 @@ Watcher.prototype.evaluate = function evaluate () {
  * Depend on all deps collected by this watcher.
  */
 Watcher.prototype.depend = function depend () {
-  debugger;
+
     var this$1 = this;
 
   var i = this.deps.length;
@@ -4054,6 +4051,7 @@ function initInternalComponent (vm, options) {
 
 function resolveConstructorOptions (Ctor) {
   var options = Ctor.options;
+  debugger
   if (Ctor.super) {
     var superOptions = resolveConstructorOptions(Ctor.super);
     var cachedSuperOptions = Ctor.superOptions;
@@ -4169,6 +4167,7 @@ function initExtend (Vue) {
    * Class inheritance
    */
   Vue.extend = function (extendOptions) {
+    
     extendOptions = extendOptions || {};
     var Super = this;
     var SuperId = Super.cid;
