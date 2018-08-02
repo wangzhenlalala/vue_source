@@ -95,12 +95,25 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
    * 沿着父类的继承链实时的去 收集父类的options，如果和子类中存储的不一样，就使用新的父类options和
    */
   let options = Ctor.options
-  if (Ctor.super) {
+  if (Ctor.super) {                                                 
     //当Ctor == Vue的时候，是不会走到这里的
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
     if (superOptions !== cachedSuperOptions) {
-      // super option changed,
+      // 一个类的options什么时候会改变 ？？？？为什么要改变options ？？？？
+      /**
+       * Briefly, double equals will perform a type conversion when comparing two things; 
+       * triple equals will do the same comparison without type conversion (by simply always returning false if the types differ)
+       */
+      //mergeOptions(parent,child)仅仅是shallolw  copy parent和child的属性形成options
+      //如果 extendOptions 和 options对象中添加，删除属性，是不会引起 superOptions !== cachedSuperOptions的。
+
+      /**
+       * 子类本来就是要继承父类的数据的，如果父类的数据改变了，子类当然要更新。。
+       * 如果手动的update(add/delete)父类的属性，子类是无法感知这种变的，所以这个时候就可以用到了immutable类似的思想，如果update该对中的一部分，就返回一个新的对象，从而
+       * 可以让后面的人，感知到变化。。。
+       */
+      // super option changed
       // need to resolve new options.
       Ctor.superOptions = superOptions
       // check if there are any late-modified/attached options (#4976)
@@ -127,6 +140,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
 }
 
 function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
+  debugger
   let modified
   //wangzhen
   /**

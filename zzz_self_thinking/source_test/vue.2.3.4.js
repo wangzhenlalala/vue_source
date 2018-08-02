@@ -4051,7 +4051,10 @@ function initInternalComponent (vm, options) {
 
 function resolveConstructorOptions (Ctor) {
   var options = Ctor.options;
-  debugger
+  if(Global_Options){
+    debugger
+  }
+  
   if (Ctor.super) {
     var superOptions = resolveConstructorOptions(Ctor.super);
     var cachedSuperOptions = Ctor.superOptions;
@@ -4075,6 +4078,7 @@ function resolveConstructorOptions (Ctor) {
 }
 
 function resolveModifiedOptions (Ctor) {
+
   var modified;
   var latest = Ctor.options;
   var extended = Ctor.extendOptions;
