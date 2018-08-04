@@ -42,6 +42,7 @@ export function initExtend (Vue: GlobalAPI) {
     const SuperId = Super.cid
     const cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {})
     if (cachedCtors[SuperId]) {
+      //什么情况下回触发这里的执行。这种情况在什么时候会发生。
       return cachedCtors[SuperId] 
     }
 
