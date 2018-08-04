@@ -165,6 +165,7 @@ ASSET_TYPES.forEach(function (type) {
  */
 strats.watch = function (parentVal: ?Object, childVal: ?Object): ?Object {
   /* istanbul ignore if */
+  //为什么要使用Object.create来生成一个新的对象呢？？？？
   if (!childVal) return Object.create(parentVal || null)
   if (!parentVal) return childVal
   const ret = {}
@@ -302,6 +303,17 @@ export function mergeOptions (
   }
   const options = {}
   let key
+  //从集合的角度思考一下两个for的意思：
+  /**
+   * 如果parent包含的内容是  P: Set
+   *     child 包含的内容是  C: Set
+   * I: Set = P intersection C 交集
+   * 
+   * 则第一个for处理的是， P  
+   * 第二个for处理的是   C-I 的部分
+   * 
+   * 总的目的是  拷贝 P Union C 并集
+   */
   for (key in parent) {
     mergeField(key)
   }
@@ -310,6 +322,7 @@ export function mergeOptions (
       mergeField(key)
     }
   }
+
   function mergeField (key) {
     const strat = strats[key] || defaultStrat
     options[key] = strat(parent[key], child[key], vm, key)
