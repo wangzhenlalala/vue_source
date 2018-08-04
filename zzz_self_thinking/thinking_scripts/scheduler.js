@@ -184,7 +184,7 @@ let nextTick = ( function(){
                                 _resolve(ctx);
                         }
                 });
-                
+                //无论cb有没有传递，当pend为假的时候等会执行timerFunc
                 if(!pending){
                         pending = true;
                         timerFunc();
