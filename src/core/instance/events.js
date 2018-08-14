@@ -70,6 +70,7 @@ export function eventsMixin (Vue: Class<Component>) {
     const vm: Component = this
     // all
     if (!arguments.length) {
+      //去除所有的topic下的回调
       vm._events = Object.create(null)
       return vm
     }
@@ -103,6 +104,8 @@ export function eventsMixin (Vue: Class<Component>) {
   }
 
   Vue.prototype.$emit = function (event: string): Component {
+    // "onClick" wrong
+    // "click" ok
     const vm: Component = this
     if (process.env.NODE_ENV !== 'production') {
       const lowerCaseEvent = event.toLowerCase()

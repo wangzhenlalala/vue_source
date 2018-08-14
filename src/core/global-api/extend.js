@@ -29,11 +29,11 @@ export function initExtend (Vue: GlobalAPI) {
     //wangzhen
     /**
      * extend的是Vue实现继承的方法。通过Vue.extend()产生的子类都会拥有这个extend的类方法。
-     * someClass_Vue_As_Base.extend(extendOptions) 都将会产生一个继承自omeClass_Vue_As_Base子类 Sub，
+     * someClass_Vue_As_Base.extend(extendOptions) 都将会产生一个继承自someClass_Vue_As_Base子类 Sub，
      * 对于Sub来说someClass_Vue_As_Base 就是他的父类，就是Super
      * 一个类，定义了有由该类实例化的实例，将会具有什么样的 属性和行为
      * vue本身指定 其实例会具有的$data,$props,methods等属性和行为，但Vue仅仅是一个 基类，仅仅定义了如果数据存在应该怎么玩，逻辑应该如何走
-     * 但是其中的数据和行为都是由生成子类是提供的options来指定的，这些option指定的属性和行为就被该子类的实例代理了。
+     * 但是其中的数据和行为都是由生成子类时提供的options来指定的，这些option指定的属性和行为就被该子类的实例代理了。
      */
     extendOptions = extendOptions || {} 
     //wangzhen

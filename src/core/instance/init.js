@@ -100,6 +100,12 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
     const superOptions = resolveConstructorOptions(Ctor.super)
     const cachedSuperOptions = Ctor.superOptions
     if (superOptions !== cachedSuperOptions) {
+      /**
+       * 为什么superOptions and options 的改变才需要重新resolve  SuperClass's options???
+       * extendOptions 的改变为什么没有算进来？？？
+       * 父类 and 子类（类的定义）有可能，是别人(第三方，你的同事)完成的，你无法改变预测别人的操作？？？
+       * 但是extendOptions是我们自己传进来的，我们对他有完全的控制能力，如果事先定义的比较好的话，我们是不会修改他的 //个人
+       */
       // 一个类的options什么时候会改变 ？？？？为什么要改变options ？？？？
       /**
        * Briefly, double equals will perform a type conversion when comparing two things; 
@@ -112,6 +118,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
        * 子类本来就是要继承父类的数据的，如果父类的数据改变了，子类当然要更新。。
        * 如果手动的update(add/delete)父类的属性，子类是无法感知这种变的，所以这个时候就可以用到了immutable类似的思想，如果update该对中的一部分，就返回一个新的对象，从而
        * 可以让后面的人，感知到变化。。。
+       * 现在是在【类的实例化阶段】，不是在extend
        */
       // super option changed
       // need to resolve new options.
@@ -137,6 +144,9 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
    * Vue.extend(options)   //可以实现类的继承
    */
   return options
+  //每次调用mergeOptions如果superOptions被改变了，都会返回一个新的对象，和之前的不同了，从而触发后续调用mergeOptions的判断
+  //superOptions !== cachedS                uperOptions 成立从而生成新的options
+
 }
 
 function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
@@ -153,6 +163,18 @@ function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
   const sealed = Ctor.sealedOptions
   for (const key in latest) {
     if (latest[key] !== sealed[key]) {
+      /**
+       * 对于两者的交集部分：
+       * 1.来自于extendOptions
+       * 2.来自于Super[options]
+       * 3.来自于两者的合并
+       * 如果latest[key] === sealed[key]
+       * 就说明该属于 就是:
+       *    expendOptions[ket]
+       * || Super[options][key] 
+       * || expendOptions[key] && Super[options][key] && strategyMerge($1,$2)
+       * 得来的
+       */
       if (!modified) modified = {}
       modified[key] = dedupe(latest[key], extended[key], sealed[key])
     }
