@@ -10,7 +10,6 @@
 }(this, (function () { 'use strict';
 
 /*  */
-
 // these helpers produces better vm code in JS engines due to their
 // explicitness and function inlining
 function isUndef (v) {
@@ -4111,12 +4110,15 @@ function dedupe (latest, extended, sealed) {
   }
 }
 
+debugger
 function Vue$3 (options) {
+  debugger
   if ("development" !== 'production' &&
     !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
   }
+  debugger
   this._init(options);
 }
 

@@ -9,7 +9,8 @@ export function initUse (Vue: GlobalAPI) {
       return this
     }
     // additional parameters
-    const args = toArray(arguments, 1)
+    const args = toArray(arguments, 1);
+    //调用插件的时候，插件得到的第一个参数，就是被调用use方法的Vue或者Vue的子类
     args.unshift(this)
     if (typeof plugin.install === 'function') {
       plugin.install.apply(plugin, args)
