@@ -145,7 +145,7 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
    */
   return options
   //每次调用mergeOptions如果superOptions被改变了，都会返回一个新的对象，和之前的不同了，从而触发后续调用mergeOptions的判断
-  //superOptions !== cachedS                uperOptions 成立从而生成新的options
+  //superOptions !== cachedSuperOptions 成立从而生成新的options
 
 }
 

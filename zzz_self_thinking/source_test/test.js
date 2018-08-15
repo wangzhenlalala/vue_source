@@ -6,6 +6,7 @@ var template = `
         <div>{{name}}</div>
 </div>
 `;
+console.log('ddd')
 var p = new Vue({
         el: '#app',
         template: template,

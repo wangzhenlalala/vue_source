@@ -1,4 +1,4 @@
-import { setServers } from "dns";
+
 import { parsePath, handleError, def } from "../../src/core/util";
 import config from "../../src/core/config";
 import { queueWatcher } from "../../src/core/observer/scheduler";
