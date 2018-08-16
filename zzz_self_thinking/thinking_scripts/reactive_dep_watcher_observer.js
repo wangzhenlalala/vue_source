@@ -1,4 +1,3 @@
-import { setServers } from "dns";
 import { parsePath, handleError, def } from "../../src/core/util";
 import config from "../../src/core/config";
 import { queueWatcher } from "../../src/core/observer/scheduler";
@@ -53,6 +52,7 @@ function initData(vm){
     //vm: Component
     //make data to be an object
     let data = vm.data;
+    // let data = vm.$options.data  //源码里面的
     data = vm._data = typeof data === 'function' 
         ? data()
         : data || {} ;
@@ -61,7 +61,7 @@ function initData(vm){
     let i = keys.length;
     //这里还要检查 data中的key不和  props 中的key冲突，同时也不是vue保留名字
     while(i--){
-        //将data中的属性代理到 vm实例上
+        //将data中的属性代理到 vm实例上的_data属性
         proxy(vm, '_data', keys[i]);
     }
 
@@ -120,6 +120,7 @@ function observe(value, asRootData){
     ){
         ob = new Observer( value ); 
     }
+    return ob;
 }
 
 

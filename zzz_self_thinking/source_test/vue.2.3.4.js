@@ -2153,6 +2153,8 @@ function eventsMixin (Vue) {
 
   Vue.prototype.$once = function (event, fn) {
     var vm = this;
+    //给$off传递的都是on函数了，为什么还要on.fn = fn？？？？？在$off的时候为甚么还要比较 cb == fn || cb.fn == fn ???? why ???/
+    //难道是为了在 $once之后，$emit之前，每个地方 调用了$off('event', fn); ???
     function on () {
       vm.$off(event, on);
       fn.apply(vm, arguments);
@@ -2217,12 +2219,14 @@ function eventsMixin (Vue) {
     var cbs = vm._events[event];
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs;
+      //cbs的一个副本 进行调用
+      //如果splice,是在vm._events[topicA]当中的
       var args = toArray(arguments, 1);
       for (var i = 0, l = cbs.length; i < l; i++) {
         cbs[i].apply(vm, args);
       }
     }
-    return vm
+    return vm;
   };
 }
 
@@ -2565,6 +2569,9 @@ function deactivateChildComponent (vm, direct) {
 }
 
 function callHook (vm, hook) {
+  if('Global_CallHook' in window && Global_CallHook){
+    debugger;
+  }
   var handlers = vm.$options[hook];
   if (handlers) {
     for (var i = 0, j = handlers.length; i < j; i++) {
@@ -3057,6 +3064,9 @@ function initProps (vm, propsOptions) {
 }
 
 function initData (vm) {
+  if('Global_InitData' in window && Global_InitData){
+    debugger
+  }
   var data = vm.$options.data;
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
@@ -4050,7 +4060,7 @@ function initInternalComponent (vm, options) {
 
 function resolveConstructorOptions (Ctor) {
   var options = Ctor.options;
-  if(Global_Options){
+  if('Global_Options' in window && Global_Options){
     debugger
   }
   
@@ -4110,15 +4120,13 @@ function dedupe (latest, extended, sealed) {
   }
 }
 
-debugger
 function Vue$3 (options) {
-  debugger
   if ("development" !== 'production' &&
     !(this instanceof Vue$3)
   ) {
     warn('Vue is a constructor and should be called with the `new` keyword');
   }
-  debugger
+  
   this._init(options);
 }
 

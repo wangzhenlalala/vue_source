@@ -61,7 +61,7 @@ let vm = new Vue( options );
 
 /**
  * vm实例仅仅是拿options中的data来渲染数据，data 和 template是分开指定的。 vm仅仅是一个中间的组装者。
- * vm_data = options.data()即data, vm实例代理了options.data()即data, 中的数据.(此时尽管options.data是一个函数)，
+ * vm._data = options.data()即data, vm实例代理了options.data()即data, 中的数据.(此时尽管options.data是一个函数)，
  * 但是，所有从该组件实例化的vm,都将拥有相同的data的索引。
  * 当我们手动的去 修改data时，所有依赖于该data的值，的vm，都应该被通知改变。。
  * 

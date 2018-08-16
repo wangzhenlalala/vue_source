@@ -15,7 +15,7 @@ function Vue (options) {
 }
 
 initMixin(Vue) //_.init()
-stateMixin(Vue) //$prop $state 
+stateMixin(Vue) //$prop $state  $watch
 eventsMixin(Vue) //$on $off $emit $once
 lifecycleMixin(Vue)
 renderMixin(Vue)

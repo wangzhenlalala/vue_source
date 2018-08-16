@@ -123,12 +123,17 @@ export function resolveConstructorOptions (Ctor: Class<Component>) {
       // super option changed
       // need to resolve new options.
       Ctor.superOptions = superOptions
+
+      /*******************11111111111********************/
+      /** 如果不考虑11111块当中的代码，就可以直接执行后面的mergeOptions */
+      
       // check if there are any late-modified/attached options (#4976)
       const modifiedOptions = resolveModifiedOptions(Ctor)
       // update base extend options
       if (modifiedOptions) {
         extend(Ctor.extendOptions, modifiedOptions)
       }
+      /*******************11111111111********************/
       options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
       if (options.name) {
         options.components[options.name] = Ctor
@@ -163,6 +168,8 @@ function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
   const sealed = Ctor.sealedOptions
   for (const key in latest) {
     if (latest[key] !== sealed[key]) {
+      //最近被修改 两者有对应的key,但是指向不一样 所以不相等
+      //最近被添加 两者没有对应的key所以不相等
       /**
        * 对于两者的交集部分：
        * 1.来自于extendOptions
@@ -179,6 +186,9 @@ function resolveModifiedOptions (Ctor: Class<Component>): ?Object {
       modified[key] = dedupe(latest[key], extended[key], sealed[key])
     }
   }
+  /**
+   * 返回的值是： latest UNION sealed DIFFERENCE sealed
+   */
   return modified
 }
 
