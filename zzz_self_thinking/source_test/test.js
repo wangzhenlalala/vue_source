@@ -1,4 +1,5 @@
-
+var Global_InitData = true;
+var Global_Options = false;
 var template = `
  <div>
         <div style="clolr:red">{{name}}</div>
@@ -13,7 +14,19 @@ var p = new Vue({
         data() {
                 return {
                         name: 'wangzhen',
-                        age: 25
+                        age: 25,
+                        children: {
+                                name: 'child',
+                                age: 8,
+                                toys: {
+                                        tname: 'dinosour'
+                                }
+                        }
+                }
+        },
+        watch: {
+                "children.toys.tname": function(newVal){
+                        console.log(newVal);
                 }
         }
 });

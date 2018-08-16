@@ -38,7 +38,9 @@ export function updateComponentListeners (
 
 export function eventsMixin (Vue: Class<Component>) {
   const hookRE = /^hook:/
+
   Vue.prototype.$on = function (event: string | Array<string>, fn: Function): Component {
+    //events 可以是数组，但是 fn 不能是数组，一次只能一个
     const vm: Component = this
     if (Array.isArray(event)) {
       for (let i = 0, l = event.length; i < l; i++) {
@@ -95,7 +97,9 @@ export function eventsMixin (Vue: Class<Component>) {
     let i = cbs.length
     while (i--) {
       cb = cbs[i]
+
       if (cb === fn || cb.fn === fn) {
+        //为什么要定义一个cd.fn的属性
         cbs.splice(i, 1)
         break
       }
@@ -123,6 +127,7 @@ export function eventsMixin (Vue: Class<Component>) {
     if (cbs) {
       cbs = cbs.length > 1 ? toArray(cbs) : cbs
       const args = toArray(arguments, 1)
+      //这样的实现有问题吧？？？？ 如果里面有once的事件回调，那么当该回调被删除之后，i++, 此时的i就不是once回调后面的那一个了？、
       for (let i = 0, l = cbs.length; i < l; i++) {
         cbs[i].apply(vm, args)
       }
