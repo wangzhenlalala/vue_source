@@ -219,6 +219,8 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     return val
   }
   if (!ob) {
+    //mergeData中也会用到这个函数，
+    //也就是说在vue实例已经创建的，ob是存在的，我们也可将别的data合并到当前的vm的data当中
     target[key] = val
     return val
   }

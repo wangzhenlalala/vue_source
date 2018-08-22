@@ -54,6 +54,7 @@ function mergeData (to: Object, from: ?Object): Object {
     //wangzhen
     if (!hasOwn(to, key)) {
       //如果不是继承的属性。 to不具有该属性
+      //set 是会把新加入的key变成响应式的
       set(to, key, fromVal)
     } else if (isPlainObject(toVal) && isPlainObject(fromVal)) {
       //当前的to对象自身具有该属性，切 toVal和fromVal是相同的数据类型 且都为 Object
