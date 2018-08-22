@@ -1,6 +1,6 @@
 
 var Global_Events = false;
-var Global_CallHook = true;
+var Global_CallHook = false;
 
 let callbacks = [];
 function cb1(index){
@@ -38,16 +38,41 @@ var template = `
         <div style="clolr:red">{{name}}</div>
         <div>{{age}}</div>
         <div>{{name}}</div>
+        <button @click="mutateName">mutate Name</button>
+        <button @click="mutateAge">mutate Age</button>
 </div>
 `;
 let subA = Vue.extend({
     watch: {
-        name: function(newValue){
-            console.log(newValue)
+        name: {
+                handler: function(newValue){
+                        console.log(newValue)
+                },
+                immediate: false
+        },
+        age: {
+                handler: function(newValuei,oldValue){
+                        console.log(newValue, 'age');
+                },
+                
+                immediate: true  // immdiate 的意思 不是 “每当watch的变化发生后，不把他放入scheduler的队列当中，而立即执行该subscriber函数”
+                                 // 而是只在组件第一次渲染的时候，就立即执行watch对应的subscriber函数，
+                                 // 如果为false，则在第一次渲染的时候，是不执行watch对应的subscriber函数的
+                                 // the callback will be called immediately after the start of the observation
         }
     },
     created: function(){
         console.log('createdAAA')
+    },
+    methods: {
+            mutateName: function(){
+                    this.name = 'fanghua';
+                    console.log(this.name, 'in MutateName');
+            },
+            mutateAge: function(){
+                    this.age = 26;
+                    console.log(this.age, 'in MutateAge')
+            }
     }
 })
 var app = new subA({

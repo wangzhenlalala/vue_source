@@ -79,6 +79,7 @@ strats.data = function (
     if (!childVal) {
       return parentVal
     }
+    //childVal存在
     if (typeof childVal !== 'function') {
       process.env.NODE_ENV !== 'production' && warn(
         'The "data" option should be a function ' +
@@ -88,6 +89,7 @@ strats.data = function (
       )
       return parentVal
     }
+    //childVal存在 and 是函数
     if (!parentVal) {
       return childVal
     }
