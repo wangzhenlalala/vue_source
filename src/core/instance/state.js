@@ -41,7 +41,8 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 }
 
 export function initState (vm: Component) {
-  vm._watchers = []
+  vm._watchers = [];
+  //这是的$options是component options and instance options 合并之后的options.
   const opts = vm.$options
   if (opts.props) initProps(vm, opts.props)
   if (opts.methods) initMethods(vm, opts.methods)
@@ -50,6 +51,9 @@ export function initState (vm: Component) {
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
+  // 【【【 computed 】】】 and 【【【 watch 】】】 entries will be watcher !!!
+  //so before init them ,data must be converted to be reactive !!!!
+  // so this is just after initProps and initMethods and initData !!!!
   if (opts.computed) initComputed(vm, opts.computed)
   if (opts.watch) initWatch(vm, opts.watch)
 }
@@ -92,6 +96,7 @@ function initProps (vm: Component, propsOptions: Object) {
         }
       })
     } else {
+      //defineReactive会为props 新建立一个 key,并把该key子书变成响应式的
       defineReactive(props, key, value)
     }
     // static props are already proxied on the component's prototype
@@ -163,11 +168,12 @@ function initComputed (vm: Component, computed: Object) {
       }
     }
     // create internal watcher for the computed property.
+    //lazy 会产生什么影响 ？？？？
     watchers[key] = new Watcher(vm, getter, noop, computedWatcherOptions)
 
     // component-defined computed properties are already defined on the
     // component prototype. We only need to define computed properties defined
-    // at instantiation here.
+    // at 【instantiation】 here.
     if (!(key in vm)) {
       defineComputed(vm, key, userDef)
     } else if (process.env.NODE_ENV !== 'production') {

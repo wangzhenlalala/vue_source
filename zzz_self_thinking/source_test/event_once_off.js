@@ -51,7 +51,7 @@ let subA = Vue.extend({
                 immediate: false
         },
         age: {
-                handler: function(newValuei,oldValue){
+                handler: function(newValue,oldValue){
                         console.log(newValue, 'age');
                 },
                 
@@ -88,13 +88,29 @@ var app = new subA({
                                 toys: {
                                         tname: 'dinosour'
                                 }
+                        },
+                        deepThing: {
+                                
+                                first: {
+                                        second: {
+                                                name: 'deepThing'
+                                        },
+                                        third: 'hello'
+                                }
                         }
                 }
         },
         watch: {
                 "children.toys.tname": function(newVal){
                         console.log(newVal);
+                },
+                deepThing: {
+                        deep: true,
+                        handler: function(newVal, oldVal){
+                                console.log('in deep thing');
+                        }
                 }
+
         }
 });
 

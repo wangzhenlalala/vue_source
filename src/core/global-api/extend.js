@@ -108,6 +108,7 @@ export function initExtend (Vue: GlobalAPI) {
   }
 }
 
+//仅仅是把他代理在了 原型上，并没有把他们变成响应式的。
 function initProps (Comp) {
   const props = Comp.options.props
   for (const key in props) {

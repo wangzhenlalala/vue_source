@@ -158,7 +158,9 @@ export function defineReactive (
   const setter = property && property.set
 
   //如果val 不是object 或者 array 则observe返回 undefined
-  let childOb = observe(val)
+  let childOb = observe(val);
+
+  //这个key，并不一定是，obj中原生的key，也可以是代理的别的obj的key
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
@@ -212,7 +214,8 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     target[key] = val
     return val
   }
-  const ob = (target : any).__ob__
+  const ob = target.__ob__;
+  
   if (target._isVue || (ob && ob.vmCount)) {
     process.env.NODE_ENV !== 'production' && warn(
       'Avoid adding reactive properties to a Vue instance or its root $data ' +

@@ -49,9 +49,9 @@ export default class Watcher {
     vm._watchers.push(this)
     // options
     if (options) {
-      this.deep = !!options.deep
-      this.user = !!options.user
-      this.lazy = !!options.lazy
+      this.deep = !!options.deep //watch
+      this.user = !!options.user //watch
+      this.lazy = !!options.lazy //computed
       this.sync = !!options.sync
     } else {
       this.deep = this.user = this.lazy = this.sync = false
