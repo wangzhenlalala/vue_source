@@ -75,6 +75,7 @@ function initProps (vm: Component, propsOptions: Object) {
   observerState.shouldConvert = isRoot
   for (const key in propsOptions) {
     keys.push(key)
+    //如果props在propsData中 or propsOptions中，指定了默认的值，将其变成响应式后(fresh copy)，则返回该值。否则是undefined
     const value = validateProp(key, propsOptions, propsData, vm)
     /* istanbul ignore else */
     if (process.env.NODE_ENV !== 'production') {
@@ -84,6 +85,7 @@ function initProps (vm: Component, propsOptions: Object) {
           vm
         )
       }
+      //props不能被子组件修改，因为后来会被覆盖
       defineReactive(props, key, value, () => {
         if (vm.$parent && !observerState.isSettingProps) {
           warn(
@@ -96,7 +98,8 @@ function initProps (vm: Component, propsOptions: Object) {
         }
       })
     } else {
-      //defineReactive会为props 新建立一个 key,并把该key子书变成响应式的
+      //defineReactive会为props 新建立一个 key,并把该key子树变成响应式的(如果是根组件的话)、
+      // 而且props中的key都被代理到了 vm上   vm.key && vm.$props.key 都被代理到了 _props上，而_props是响应式的 ；_props 有来自于 vm.$options.props, vm.$options.props有来自于 类的继承和实例的options中
       defineReactive(props, key, value)
     }
     // static props are already proxied on the component's prototype

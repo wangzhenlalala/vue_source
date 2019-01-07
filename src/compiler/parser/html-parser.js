@@ -31,11 +31,22 @@ const attribute = new RegExp(
 
 // could use https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-QName
 // but for Vue templates we can enforce a simple charset
+
+/**
+    <xhtml:html xmlns:xhtml="http://www.w3.org/1999/xhtml">
+        <xhtml:head>
+            <xhtml:title>Example XHTML page</xhtml:title>
+        </xhtml:head>
+        <xhtml:body>
+            Hello world!
+        </xhtml:body>
+    </xhtml:html>
+ */
 const ncname = '[a-zA-Z_][\\w\\-\\.]*'
-const qnameCapture = '((?:' + ncname + '\\:)?' + ncname + ')'
-const startTagOpen = new RegExp('^<' + qnameCapture)
+const qnameCapture = '((?:' + ncname + '\\:)?' + ncname + ')'  //  ((?:[a-zA-Z_][\\w\\-\\.]*\\:)?[a-zA-Z_][\\w\\-\\.]*) name:wangzhen wangzhen e
+const startTagOpen = new RegExp('^<' + qnameCapture)  // <Name:wangzhen > <Naame:wangzhen />
 const startTagClose = /^\s*(\/?)>/
-const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>')
+const endTag = new RegExp('^<\\/' + qnameCapture + '[^>]*>') // < Name:wangzhen > , </Name:wangzhen>
 const doctype = /^<!DOCTYPE [^>]+>/i
 const comment = /^<!--/
 const conditionalComment = /^<!\[/

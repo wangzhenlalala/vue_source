@@ -40,6 +40,15 @@ var template = `
         <div>{{name}}</div>
         <button @click="mutateName">mutate Name</button>
         <button @click="mutateAge">mutate Age</button>
+        <p>
+                <h1>heee</h1>
+                <span>hehl</span>
+                <h1>wangzhen</h1>
+                <span>worlde</span>
+        </p>
+        <p>
+                <span>jkk</span>
+        </p>
 </div>
 `;
 let subA = Vue.extend({

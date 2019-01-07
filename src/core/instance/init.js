@@ -52,7 +52,7 @@ export function initMixin (Vue: Class<Component>) {
     vm._self = vm
     initLifecycle(vm)
     initEvents(vm)
-    initRender(vm)
+    initRender(vm)// 在_update中，将mountComponent（）{}放到了watcher中，这样mountComponent就会在当前event loop的下一个循环中被执行。 其中会callHook('mounted")
     callHook(vm, 'beforeCreate')
     initInjections(vm) // resolve injections before data/props
     initState(vm)

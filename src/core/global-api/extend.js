@@ -109,6 +109,7 @@ export function initExtend (Vue: GlobalAPI) {
 }
 
 //仅仅是把他代理在了 原型上，并没有把他们变成响应式的。
+//在组件实例化的时候，还要重新解析一次 该组件的options resolveConstructorOptions.那个时候comp.options.props可能已经改变了。
 function initProps (Comp) {
   const props = Comp.options.props
   for (const key in props) {
