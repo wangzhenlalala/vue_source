@@ -438,7 +438,7 @@ class Watcher {
                 handleError(error, vm, `${this.expression}`);
             }
         }else{
-            value = this.getter.call(vm,vm);
+            value = this.getter.call(vm,vm); // 创建了一个binding 相当于QT里面的   connect(vm, key, watcher, run);
         };
 
         //touch every property so they are all tracked as
@@ -505,7 +505,7 @@ class Watcher {
         while(i--){
             const dep = this.deps[i];
             if( !this.newDepIds.has(dep.id)){
-                dep.removeSub(this);
+                dep.removeSub(this); // 解除绑定！！！！
             }
         };
 

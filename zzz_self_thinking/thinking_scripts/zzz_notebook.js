@@ -41,3 +41,11 @@ condition1
     // have mutated.
 
 
+1. Binding 
+2. Subject
+3. Observer
+
+?-1: Binding 是社么时候，什么条件下创建的
+?-2: Subject 是如何通过 Binding 通知 Observer的
+?-3: Observer是如何响应变化的
+?-4: Binding 是什么时候，什么条件下解除的

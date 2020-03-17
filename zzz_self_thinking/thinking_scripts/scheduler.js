@@ -115,7 +115,7 @@ function resetSchedulerState(){
         if( process.env.NODE_ENV !== 'production'){
                 circular = [];
         };
-        waiting = flushing = false;       
+        waiting = flushing = false;
 }
 
 function callUpdateHooks(){
